@@ -1,5 +1,7 @@
 package com.marcelo_corrtes.api.dtos;
 
+import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -22,5 +24,7 @@ public class TransactionDTO {
     @NotBlank
     @Size(min = 1, max = 10)
     private String descricao;
+
+    private LocalDateTime realizadaEm;
 
 }
