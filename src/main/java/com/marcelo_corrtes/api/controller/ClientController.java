@@ -9,31 +9,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.marcelo_corrtes.api.dtos.TransactionDTO;
-import com.marcelo_corrtes.api.models.ClientModel;
 import com.marcelo_corrtes.api.models.TransactionModel;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController()
 @RequestMapping("/clientes")
 public class ClientController {
 
     @GetMapping
-    public String GetListClient() {
+    public String getListClient() {
 
         return "Lista de Clientes";
 
     }
 
     @PostMapping("/{id}/transacoes")
-    public ResponseEntity<Object> CreateTransaction(@PathVariable Long id,
+    public ResponseEntity<TransactionModel> createTransaction(@PathVariable Long id,
             @RequestBody @Valid TransactionDTO entity) {
 
-        return entity;
+        return ResponseEntity.ok(new TransactionModel());
     }
 
     @GetMapping("/{id}/extrato")
