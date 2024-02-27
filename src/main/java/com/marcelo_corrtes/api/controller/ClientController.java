@@ -1,6 +1,7 @@
 package com.marcelo_corrtes.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,15 +29,14 @@ public class ClientController {
     }
 
     @PostMapping("/{id}/transacoes")
-    public ResponseEntity<TransactionModel> createTransaction(@PathVariable Long id,
+    public String reateTransaction(@PathVariable Long id,
             @RequestBody @Valid TransactionDTO entity) {
+        // response 200 ok
 
-        return ResponseEntity.ok(new TransactionModel());
     }
 
     @GetMapping("/{id}/extrato")
     public String getExtractById(@PathVariable Long id) {
         return new String();
     }
-
 }
