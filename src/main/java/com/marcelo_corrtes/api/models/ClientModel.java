@@ -13,12 +13,12 @@ public class ClientModel {
     private Long id;
 
     @Column(name = "name", nullable = false, length = 100)
-    private String name;
+    private String nome;
 
     @Column(nullable = false)
-    private int balance;
+    private int saldo;
 
     @Column(nullable = false)
-    private int limit;
+    private int limite;
 
 }

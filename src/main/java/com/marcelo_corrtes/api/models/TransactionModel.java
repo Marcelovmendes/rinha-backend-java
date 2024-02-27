@@ -1,5 +1,7 @@
 package com.marcelo_corrtes.api.models;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 
@@ -21,16 +25,20 @@ public class TransactionModel {
     private Long id;
 
     @Column(nullable = false)
-    private int value;
+    private int valor;
 
     @Column(nullable = false)
-    private String type;
+    private String tipo;
 
     @Column(nullable = false, length = 250)
-    private String description;
+    private String descricao;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
-    private ClientModel client;
+    @JoinColumn(name = "id_cliente")
+    private ClientModel cliente;
+
+    @Column(name = "realizado_em")
+    @CreationTimestamp
+    private LocalDateTime realizadoEm;
 
 }
