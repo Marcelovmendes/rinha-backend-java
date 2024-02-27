@@ -27,16 +27,24 @@ public class RinhaService {
         this.transactionsRepository = transactionsRepository;
     }
 
-    public String postTransactionbyClientId(TransactionDTO entity) {
-        /*
-         * Uma transação de débito nunca pode deixar o saldo do cliente
-         * menor que seu limite disponível. Por exemplo, um cliente com
-         * limite de 1000 (R$ 10) nunca deverá ter o saldo menor que -1000
-         * (R$ -10). Nesse caso, um saldo de -1001 ou menor significa inconsistência
-         * na Rinha de Backend!
-         */
+    public TransactionDTO postTransactionbyClientId(TransactionDTO body, Long clientId) {
+        try {
+            ClientModel cliente = clientRepository.findById(clientId).orElseThrow(() -> new NotFoundException());
+            TransactionModel transacao = new TransactionModel();
+            transacao.setValor(body.getValor());
+            transacao.setTipo(body.getTipo());
+            transacao.setDescricao(body.getDescricao());
+            transacao.setRealizadoEm(transacao.getRealizadoEm());
 
-        return "response 200 ok";
+            transacao.setCliente(cliente);
+
+            TransactionModel savedTrasaction = transactionsRepository.save(transacao);
+
+            return toDTO(savedTrasaction);
+
+        } catch (Exception e) {
+            return null;
+        }
 
     }
 
@@ -52,7 +60,6 @@ public class RinhaService {
 
             List<TransactionModel> transacoes = transactionsRepository
                     .findTop10ByClienteOrderByRealizadoEmDesc(cliente);
-
             ExtractDTO extrato = new ExtractDTO();
             extrato.setSaldo(saldo);
             extrato.setUltimasTransacoes(transacoes.stream().map(this::toDTO).collect(Collectors.toList()));
@@ -73,3 +80,4 @@ public class RinhaService {
         dto.setRealizadaEm(transacao.getRealizadoEm());
         return dto;
     }
+}
