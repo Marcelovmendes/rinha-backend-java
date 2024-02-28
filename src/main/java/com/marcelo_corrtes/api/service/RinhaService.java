@@ -27,9 +27,10 @@ public class RinhaService {
         this.transactionsRepository = transactionsRepository;
     }
 
+    @Transactional(readOnly = true)
     public TransactionDTO postTransactionbyClientId(TransactionDTO body, Long clientId) {
         try {
-            ClientModel cliente = clientRepository.findById(clientId).orElseThrow(() -> new NotFoundException());
+            ClientModel cliente = clientRepository.findById(clientId).orElseThrow(NotFoundException::new);
             TransactionModel transacao = new TransactionModel();
             transacao.setValor(body.getValor());
             transacao.setTipo(body.getTipo());
@@ -51,7 +52,7 @@ public class RinhaService {
     @Transactional(readOnly = true)
     public ExtractDTO getExtrato(Long clientId) {
         try {
-            ClientModel cliente = clientRepository.findById(clientId).orElseThrow(() -> new NotFoundException());
+            ClientModel cliente = clientRepository.findById(clientId).orElseThrow(NotFoundException::new);
 
             BalanceDTO saldo = new BalanceDTO();
             saldo.setTotal(cliente.getSaldo());
