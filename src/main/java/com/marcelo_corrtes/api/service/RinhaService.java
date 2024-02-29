@@ -27,7 +27,6 @@ public class RinhaService {
         this.transactionsRepository = transactionsRepository;
     }
 
-    @Transactional(readOnly = true)
     public BalanceDTO postTransactionbyClientId(TransactionDTO body, Long clientId) {
 
         ClientModel client = clientRepository.findById(clientId)
@@ -58,7 +57,6 @@ public class RinhaService {
         return balance;
     }
 
-    @Transactional(readOnly = true)
     public ExtractDTO getExtrato(Long clientId) {
         ClientModel client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new NotFoundUserException("User not found!"));
