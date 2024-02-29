@@ -11,7 +11,7 @@ import com.marcelo_corrtes.api.service.RinhaService;
 @RestController()
 @RequestMapping("/clientes")
 public class ClientController {
-    @
+
     private final RinhaService rinhaService;
 
     public ClientController(RinhaService rinhaService) {

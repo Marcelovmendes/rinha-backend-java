@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.marcelo_corrtes.api.dtos.ExtractDTO;
 import com.marcelo_corrtes.api.dtos.TransactionDTO;
+import com.marcelo_corrtes.api.exceptions.NotFoundUserException;
 import com.marcelo_corrtes.api.models.ClientModel;
 import com.marcelo_corrtes.api.models.TransactionModel;
 import com.marcelo_corrtes.api.repository.ClientRepository;
@@ -29,43 +30,48 @@ public class RinhaService {
 
     @Transactional(readOnly = true)
     public TransactionDTO postTransactionbyClientId(TransactionDTO body, Long clientId) {
-        try {
-            ClientModel cliente = clientRepository.findById(clientId).orElseThrow(NotFoundException::new);
-            TransactionModel transacao = new TransactionModel();
-            transacao.setValor(body.getValor());
-            transacao.setTipo(body.getTipo());
-            transacao.setDescricao(body.getDescricao());
-            transacao.setRealizadoEm(transacao.getRealizadoEm());
 
-            transacao.setCliente(cliente);
+        ClientModel client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new NotFoundUserException("User not found!"));
 
-            TransactionModel savedTrasaction = transactionsRepository.save(transacao);
+        TransactionModel transaction = new TransactionModel();
+        transaction.setValor(body.getValor());
+        transaction.setTipo(body.getTipo());
+        transaction.setDescricao(body.getDescricao());
+        transaction.setRealizadoEm(transaction.getRealizadoEm());
+        transaction.setCliente(client);
 
-            return toDTO(savedTrasaction);
-
-        } catch (Exception e) {
-            return null;
+        if (transaction.getTipo().equals("c")) {
+            client.setLimite(client.getLimite() - transaction.getValor());
         }
+        if (transaction.getTipo().equals("d")) {
+            if (client.getSaldo() + client.getLimite() > transaction.getValor()) {
+                throw new IllegalArgumentException("Balance is not enough!");
+            }
+            client.setSaldo(client.getSaldo() - transaction.getValor());
+        }
+        TransactionModel savedTrasaction = transactionsRepository.save(transaction);
 
+        return toDTO(savedTrasaction);
     }
 
     @Transactional(readOnly = true)
     public ExtractDTO getExtrato(Long clientId) {
         try {
-            ClientModel cliente = clientRepository.findById(clientId).orElseThrow(NotFoundException::new);
+            ClientModel client = clientRepository.findById(clientId).orElseThrow(NotFoundException::new);
 
-            BalanceDTO saldo = new BalanceDTO();
-            saldo.setTotal(cliente.getSaldo());
-            saldo.setDataExtrato(LocalDateTime.now());
-            saldo.setLimite(cliente.getLimite());
+            BalanceDTO balance = new BalanceDTO();
+            balance.setTotal(client.getSaldo());
+            balance.setDataExtrato(LocalDateTime.now());
+            balance.setLimite(client.getLimite());
 
-            List<TransactionModel> transacoes = transactionsRepository
-                    .findTop10ByClienteOrderByRealizadoEmDesc(cliente);
-            ExtractDTO extrato = new ExtractDTO();
-            extrato.setSaldo(saldo);
-            extrato.setUltimasTransacoes(transacoes.stream().map(this::toDTO).collect(Collectors.toList()));
+            List<TransactionModel> transactions = transactionsRepository
+                    .findTop10ByClienteOrderByRealizadoEmDesc(client);
+            ExtractDTO extract = new ExtractDTO();
+            extract.setSaldo(balance);
+            extract.setUltimasTransacoes(transactions.stream().map(this::toDTO).collect(Collectors.toList()));
 
-            return extrato;
+            return extract;
         } catch (NotFoundException e) {
 
             return null;
