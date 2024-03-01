@@ -1,4 +1,4 @@
-package com.marcelo_corrtes.api.exceptions;
+package com.rinhabackendv1.api.exceptions;
 
 public class NotFoundUserException extends RuntimeException {
 

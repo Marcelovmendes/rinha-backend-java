@@ -1,4 +1,4 @@
-package com.marcelo_corrtes.api.exceptions;
+package com.rinhabackendv1.api.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

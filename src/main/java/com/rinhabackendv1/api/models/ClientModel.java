@@ -1,4 +1,4 @@
-package com.marcelo_corrtes.api.models;
+package com.rinhabackendv1.api.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

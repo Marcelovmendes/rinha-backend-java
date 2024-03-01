@@ -1,12 +1,12 @@
-package com.marcelo_corrtes.api.repository;
+package com.rinhabackendv1.api.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.marcelo_corrtes.api.models.ClientModel;
-import com.marcelo_corrtes.api.models.TransactionModel;
+import com.rinhabackendv1.api.models.ClientModel;
+import com.rinhabackendv1.api.models.TransactionModel;
 
 @Repository
 public interface TransactionsRepository extends JpaRepository<TransactionModel, Long> {

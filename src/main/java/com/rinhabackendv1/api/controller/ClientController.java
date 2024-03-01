@@ -1,4 +1,4 @@
-package com.marcelo_corrtes.api.controller;
+package com.rinhabackendv1.api.controller;
 
 import java.util.Optional;
 
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.marcelo_corrtes.api.dtos.BalanceDTO;
-import com.marcelo_corrtes.api.dtos.ExtractDTO;
-import com.marcelo_corrtes.api.dtos.TransactionDTO;
-import com.marcelo_corrtes.api.service.RinhaService;
+import com.rinhabackendv1.api.dtos.BalanceDTO;
+import com.rinhabackendv1.api.dtos.ExtractDTO;
+import com.rinhabackendv1.api.dtos.TransactionDTO;
+import com.rinhabackendv1.api.service.RinhaService;
 
 import jakarta.validation.Valid;
 
@@ -47,11 +47,6 @@ public class ClientController {
     public ResponseEntity<Optional<ExtractDTO>> getExtractById(@PathVariable @Valid Long id) {
 
         ExtractDTO extract = rinhaService.getExtrato(id);
-        Optional<ExtractDTO> extractOptional = Optional.ofNullable(extract);
-
-        if (extractOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(extractOptional);
-        }
 
         return ResponseEntity.status(HttpStatus.OK).body(Optional.ofNullable(extract));
 

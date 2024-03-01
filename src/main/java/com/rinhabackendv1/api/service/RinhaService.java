@@ -1,27 +1,25 @@
-package com.marcelo_corrtes.api.service;
+package com.rinhabackendv1.api.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.marcelo_corrtes.api.dtos.ExtractDTO;
-import com.marcelo_corrtes.api.dtos.TransactionDTO;
-import com.marcelo_corrtes.api.exceptions.NotFoundUserException;
-import com.marcelo_corrtes.api.exceptions.TransactionErrorException;
-import com.marcelo_corrtes.api.models.ClientModel;
-import com.marcelo_corrtes.api.models.TransactionModel;
-import com.marcelo_corrtes.api.repository.ClientRepository;
-import com.marcelo_corrtes.api.repository.TransactionsRepository;
-import com.marcelo_corrtes.api.dtos.BalanceDTO;
+import com.rinhabackendv1.api.dtos.BalanceDTO;
+import com.rinhabackendv1.api.dtos.ExtractDTO;
+import com.rinhabackendv1.api.dtos.TransactionDTO;
+import com.rinhabackendv1.api.exceptions.NotFoundUserException;
+import com.rinhabackendv1.api.models.ClientModel;
+import com.rinhabackendv1.api.models.TransactionModel;
+import com.rinhabackendv1.api.repository.ClientRepository;
+import com.rinhabackendv1.api.repository.TransactionsRepository;
 
 @Service
 public class RinhaService {
 
-    final ClientRepository clientRepository;
-    final TransactionsRepository transactionsRepository;
+    private final ClientRepository clientRepository;
+    private final TransactionsRepository transactionsRepository;
 
     RinhaService(ClientRepository clientRepository, TransactionsRepository transactionsRepository) {
         this.clientRepository = clientRepository;
@@ -30,16 +28,8 @@ public class RinhaService {
 
     public BalanceDTO postTransactionbyClientId(TransactionDTO body, Long clientId) {
 
-        ClientModel client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new NotFoundUserException("User not found!"));
-
-        TransactionModel transaction = new TransactionModel();
-        transaction.setValor(body.getValor());
-        transaction.setTipo(body.getTipo());
-        transaction.setDescricao(body.getDescricao());
-        transaction.setRealizadoEm(transaction.getRealizadoEm());
-        transaction.setCliente(client);
-
+        ClientModel client = getClient(clientId);
+        TransactionModel transaction = toModel(body, client);
         if (transaction.getTipo().equals("c")) {
             client.setLimite(client.getLimite() - transaction.getValor());
         }
@@ -51,23 +41,17 @@ public class RinhaService {
         }
         transactionsRepository.save(transaction);
         clientRepository.save(client);
-        BalanceDTO balance = new BalanceDTO();
-        balance.setSaldo(client.getSaldo());
-        balance.setLimite(client.getLimite());
+        return createBalanceDTO(client);
 
-        return balance;
     }
 
     public ExtractDTO getExtrato(Long clientId) {
-        ClientModel client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new NotFoundUserException("User not found!"));
-
-        BalanceDTO balance = new BalanceDTO();
-        balance.setSaldo(client.getSaldo());
-        balance.setLimite(client.getLimite());
+        ClientModel client = getClient(clientId);
+        BalanceDTO balance = createBalanceDTO(client);
 
         List<TransactionModel> transactions = transactionsRepository
                 .findTop10ByClienteOrderByRealizadoEmDesc(client);
+
         ExtractDTO extract = new ExtractDTO();
         extract.setSaldo(balance);
         extract.setDataExtrato(LocalDateTime.now());
@@ -75,6 +59,18 @@ public class RinhaService {
 
         return extract;
 
+    }
+
+    private ClientModel getClient(Long clientId) {
+        return clientRepository.findById(clientId)
+                .orElseThrow(() -> new NotFoundUserException("User not found!"));
+    }
+
+    private BalanceDTO createBalanceDTO(ClientModel client) {
+        BalanceDTO balance = new BalanceDTO();
+        balance.setSaldo(client.getSaldo());
+        balance.setLimite(client.getLimite());
+        return balance;
     }
 
     private TransactionDTO toDTO(TransactionModel transacao) {
@@ -85,5 +81,16 @@ public class RinhaService {
         dto.setDescricao(transacao.getDescricao());
         dto.setRealizadaEm(transacao.getRealizadoEm());
         return dto;
+    }
+
+    private TransactionModel toModel(TransactionDTO dto, ClientModel client) {
+        TransactionModel model = new TransactionModel();
+        model.setValor(dto.getValor());
+        model.setTipo(dto.getTipo());
+        model.setDescricao(dto.getDescricao());
+        model.setRealizadoEm(dto.getRealizadaEm());
+        model.setCliente(client);
+
+        return model;
     }
 }

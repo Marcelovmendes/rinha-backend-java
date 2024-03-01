@@ -1,4 +1,4 @@
-package com.marcelo_corrtes.api;
+package com.rinhabackendv1.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

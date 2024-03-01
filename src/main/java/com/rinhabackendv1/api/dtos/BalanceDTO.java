@@ -1,4 +1,4 @@
-package com.marcelo_corrtes.api.dtos;
+package com.rinhabackendv1.api.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
