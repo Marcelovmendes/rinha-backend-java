@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.marcelo_corrtes.api.dtos.ExtractDTO;
 import com.marcelo_corrtes.api.dtos.TransactionDTO;
 import com.marcelo_corrtes.api.exceptions.NotFoundUserException;
+import com.marcelo_corrtes.api.exceptions.TransactionErrorException;
 import com.marcelo_corrtes.api.models.ClientModel;
 import com.marcelo_corrtes.api.models.TransactionModel;
 import com.marcelo_corrtes.api.repository.ClientRepository;

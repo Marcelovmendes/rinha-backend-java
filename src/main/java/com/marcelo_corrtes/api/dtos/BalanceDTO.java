@@ -1,7 +1,5 @@
 package com.marcelo_corrtes.api.dtos;
 
-import java.time.LocalDateTime;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
