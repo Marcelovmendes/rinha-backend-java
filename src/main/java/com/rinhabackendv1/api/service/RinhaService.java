@@ -26,6 +26,10 @@ public class RinhaService {
         this.transactionsRepository = transactionsRepository;
     }
 
+    public List<ClientModel> getAllClients() {
+        return clientRepository.findAll();
+    }
+
     public BalanceDTO postTransactionbyClientId(TransactionDTO body, Long clientId) {
 
         ClientModel client = getClient(clientId);

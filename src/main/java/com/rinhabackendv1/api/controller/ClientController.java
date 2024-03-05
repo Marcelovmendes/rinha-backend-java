@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rinhabackendv1.api.dtos.BalanceDTO;
 import com.rinhabackendv1.api.dtos.ExtractDTO;
 import com.rinhabackendv1.api.dtos.TransactionDTO;
+import com.rinhabackendv1.api.models.ClientModel;
 import com.rinhabackendv1.api.service.RinhaService;
 
 import jakarta.validation.Valid;
@@ -32,6 +33,11 @@ public class ClientController {
     @GetMapping
     public ResponseEntity<String> health() {
         return ResponseEntity.status(HttpStatus.OK).body("It's healthy!");
+    }
+
+    @GetMapping
+    public ResponseEntity<Iterable<ClientModel>> getAllClients() {
+        return ResponseEntity.status(HttpStatus.OK).body(rinhaService.getAllClients());
     }
 
     @PostMapping("/{id}/transacoes")
