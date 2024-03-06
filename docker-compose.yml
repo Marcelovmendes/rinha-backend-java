@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+
+  api01: &api
+    container_name: api01
+    image: marcelovmendes/rinha-backend-java:latest
+    hostname: api01
+    pull_policy: always
+    environment:
+      - DB_HOSTNAME=db
+    ports:
+      - "8081:8080"
+    deploy:
+      resources:
+        limits:
+        cpu: "0.6"
+        memory: "200MB"
+
+  api02:
+    <<: *api
+    container_name: api02
+    hostname: api02
+    ports:
+      - "8082:8080"
+    deploy:
+      resources:
+        limits:
+        cpu: "0.6"
+        memory: "200MB"
+
+  db:
+    container_name: db
+    image: postgres:16.2
+    hostname: db
+    environment:
+      - POSTGRES_USER=driven
+      - POSTGRES_PASSWORD=driven
+      - POSTGRES_DB=rinhabackend
+    ports:
+      - "5432:5432"
+    volumes: -./init.sql:/docker-entrypoint-initdb.d/init.sql
+    deploy:
+      resources:
+        limits:
+        cpu: "0.13"
+        memory: "140MB"
+
+  nginx:
+    image: nginx:1.21.5
