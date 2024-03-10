@@ -1,5 +1,11 @@
-INSERT INTO clientes (id, limite, saldo) VALUES (1, 100000, 0);
-INSERT INTO clientes (id, limite, saldo) VALUES (2, 80000, 0);
-INSERT INTO clientes (id, limite, saldo) VALUES (3, 1000000, 0);
-INSERT INTO clientes (id, limite, saldo) VALUES (4, 10000000, 0);
-INSERT INTO clientes (id, limite, saldo) VALUES (5, 500000, 0);
+
+INSERT INTO clientes (nome, limite)
+
+VALUES 
+('João', 1000),
+('Maria', 2000),
+('José', 3000),
+('Ana', 4000),
+('Carlos', 5000);
+ 
+ END;
