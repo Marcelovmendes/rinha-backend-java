@@ -30,7 +30,7 @@ public class ClientController {
         this.rinhaService = rinhaService;
     }
 
-    @GetMapping
+    @GetMapping("/health")
     public ResponseEntity<String> health() {
         return ResponseEntity.status(HttpStatus.OK).body("It's healthy!");
     }

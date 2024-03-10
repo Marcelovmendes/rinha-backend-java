@@ -16,11 +16,11 @@ public class ClientModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(nullable = false)
-    private int saldo;
+    @Column(nullable = false )
+    private int saldo = 0;
 
     @Column(nullable = false)
     private int limite;
