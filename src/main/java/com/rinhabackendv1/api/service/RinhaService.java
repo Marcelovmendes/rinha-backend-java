@@ -33,7 +33,13 @@ public class RinhaService {
     public BalanceDTO postTransactionbyClientId(TransactionDTO body, Long clientId) {
 
         ClientModel client = getClient(clientId);
-        TransactionModel transaction = toModel(body, client);
+        TransactionModel transaction = new TransactionModel();
+        transaction.setValor(body.getValor());
+        transaction.setTipo(body.getTipo());
+        transaction.setDescricao(body.getDescricao());
+        transaction.setRealizadoEm(LocalDateTime.now());
+        transaction.setCliente(client);
+
         if (transaction.getTipo().equals("c")) {
             client.setLimite(client.getLimite() - transaction.getValor());
         }
@@ -87,14 +93,4 @@ public class RinhaService {
         return dto;
     }
 
-    private TransactionModel toModel(TransactionDTO dto, ClientModel client) {
-        TransactionModel model = new TransactionModel();
-        model.setValor(dto.getValor());
-        model.setTipo(dto.getTipo());
-        model.setDescricao(dto.getDescricao());
-        model.setRealizadoEm(dto.getRealizadaEm());
-        model.setCliente(client);
-
-        return model;
-    }
 }
