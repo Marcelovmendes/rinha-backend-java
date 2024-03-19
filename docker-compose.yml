@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   api01: &api
-    image: marcelocortess/rinha-backend:0.0.1-SNAPSHOT
+    image: marcelocortess/rinha-backend:0.0.2-SNAPSHOT
     hostname: api01
     networks:
       - default
@@ -25,12 +25,11 @@ services:
   db:
     image: postgres:latest
     hostname: db
-    restart: unless-stopped
     networks:
       - default
     environment:
       POSTGRES_DB: postgres
-      POSTGRES_USER: rinhabackend
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: driven
     ports:
       - "5433:5432"

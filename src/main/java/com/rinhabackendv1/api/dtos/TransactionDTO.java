@@ -31,6 +31,8 @@ public class TransactionDTO {
 
 
     public TransactionDTO( TransactionModel transactionModel) {
+        
+        
         this.valor = transactionModel.getValor();
         this.tipo = transactionModel.getTipo();
         this.descricao = transactionModel.getDescricao();
