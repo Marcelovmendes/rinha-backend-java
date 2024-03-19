@@ -28,15 +28,14 @@ services:
     networks:
       - default
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: rinhabackend
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: driven
     ports:
-      - "5433:5432"
+      - "5433:5432" 
     volumes:
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./database/postgresql.conf:/docker-entrypoint-initdb.d/postgresql.conf
-    command: postgres -c config_file=/docker-entrypoint-initdb.d/postgresql.conf 
+      - ./database/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+    command: -c config_file=/var/lib/postgresql/data/postgresql.conf 
     deploy:
       resources:
         limits:
