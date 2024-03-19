@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.rinhabackendv1.api.dtos.TransactionDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,5 +41,12 @@ public class TransactionModel {
     @Column(name = "realizado_em")
     @CreationTimestamp
     private LocalDateTime realizadoEm;
-
+     
+    public TransactionModel(TransactionDTO dto, ClientModel client) {
+        this.valor = dto.getValor();
+        this.tipo = dto.getTipo();
+        this.descricao = dto.getDescricao();
+        this.realizadoEm = LocalDateTime.now();
+        this.cliente = client;
+    }
 }

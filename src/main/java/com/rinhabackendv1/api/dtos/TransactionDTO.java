@@ -2,6 +2,8 @@ package com.rinhabackendv1.api.dtos;
 
 import java.time.LocalDateTime;
 
+import com.rinhabackendv1.api.models.TransactionModel;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -27,4 +29,11 @@ public class TransactionDTO {
 
     private LocalDateTime realizadaEm;
 
+
+    public TransactionDTO( TransactionModel transactionModel) {
+        this.valor = transactionModel.getValor();
+        this.tipo = transactionModel.getTipo();
+        this.descricao = transactionModel.getDescricao();
+        this.realizadaEm = transactionModel.getRealizadoEm();
+    }
 }

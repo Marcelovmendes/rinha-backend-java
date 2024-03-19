@@ -33,13 +33,38 @@ public class RinhaService {
     public BalanceDTO postTransactionbyClientId(TransactionDTO body, Long clientId) {
 
         ClientModel client = getClient(clientId);
-        TransactionModel transaction = new TransactionModel();
-        transaction.setValor(body.getValor());
-        transaction.setTipo(body.getTipo());
-        transaction.setDescricao(body.getDescricao());
-        transaction.setRealizadoEm(LocalDateTime.now());
-        transaction.setCliente(client);
+        TransactionModel transaction = new TransactionModel(body, client);
 
+        validateTransaction(transaction, client);
+
+        transactionsRepository.save(transaction);
+        clientRepository.save(client);
+        
+        return new BalanceDTO(client);
+
+    }
+
+    public ExtractDTO getExtrato(Long clientId) {
+        ClientModel client = getClient(clientId);
+        BalanceDTO balance =  new BalanceDTO(client);
+
+        List<TransactionModel> transactions = transactionsRepository
+                .findTop10ByClienteOrderByRealizadoEmDesc(client);
+
+        ExtractDTO extract = new ExtractDTO();
+        extract.setSaldo(balance);
+        extract.setDataExtrato(LocalDateTime.now());
+        extract.setUltimasTransacoes(transactions.stream().map(TransactionDTO::new).collect(Collectors.toList()));
+        return extract;
+
+    }
+
+    private ClientModel getClient(Long clientId) {
+        return clientRepository.findById(clientId)
+                .orElseThrow(() -> new NotFoundUserException("User not found!"));
+    }
+ 
+    private void validateTransaction(TransactionModel transaction, ClientModel client) {
         if (transaction.getTipo().equals("c")) {
             client.setLimite(client.getLimite() - transaction.getValor());
         }
@@ -49,48 +74,7 @@ public class RinhaService {
             }
             client.setSaldo(client.getSaldo() - transaction.getValor());
         }
-        transactionsRepository.save(transaction);
-        clientRepository.save(client);
-        return createBalanceDTO(client);
-
     }
 
-    public ExtractDTO getExtrato(Long clientId) {
-        ClientModel client = getClient(clientId);
-        BalanceDTO balance = createBalanceDTO(client);
-
-        List<TransactionModel> transactions = transactionsRepository
-                .findTop10ByClienteOrderByRealizadoEmDesc(client);
-
-        ExtractDTO extract = new ExtractDTO();
-        extract.setSaldo(balance);
-        extract.setDataExtrato(LocalDateTime.now());
-        extract.setUltimasTransacoes(transactions.stream().map(this::toDTO).collect(Collectors.toList()));
-
-        return extract;
-
-    }
-
-    private ClientModel getClient(Long clientId) {
-        return clientRepository.findById(clientId)
-                .orElseThrow(() -> new NotFoundUserException("User not found!"));
-    }
-
-    private BalanceDTO createBalanceDTO(ClientModel client) {
-        BalanceDTO balance = new BalanceDTO();
-        balance.setSaldo(client.getSaldo());
-        balance.setLimite(client.getLimite());
-        return balance;
-    }
-
-    private TransactionDTO toDTO(TransactionModel transacao) {
-        TransactionDTO dto = new TransactionDTO();
-
-        dto.setValor(transacao.getValor());
-        dto.setTipo(transacao.getTipo());
-        dto.setDescricao(transacao.getDescricao());
-        dto.setRealizadaEm(transacao.getRealizadoEm());
-        return dto;
-    }
-
+                                                                                                                        
 }
