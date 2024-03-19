@@ -23,7 +23,7 @@ services:
     hostname: api02
 
   db:
-    image: postgres:latest
+    image: postgres:alpine
     hostname: db
     networks:
       - default
@@ -34,8 +34,7 @@ services:
     ports:
       - "5433:5432" 
     volumes:
-      - ./database/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-    command: -c config_file=/var/lib/postgresql/data/postgresql.conf 
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     deploy:
       resources:
         limits:
