@@ -15,10 +15,13 @@ CREATE TABLE IF NOT EXISTS transacoes (
     FOREIGN KEY (id_cliente) REFERENCES clientes(id)
 );
 
-INSERT INTO clientes (nome, limite)
-VALUES 
-('João', 1000),
-('Maria', 2000),
-('José', 3000),
-('Ana', 4000),
-('Carlos', 5000);
+DO $$
+BEGIN
+  INSERT INTO clientes (nome, limite)
+  VALUES
+    ('Alvaro', 1000 * 100),
+    ('Gibran', 800 * 100),
+    ('Iago', 10000 * 100),
+    ('Jvac', 100000 * 100),
+    ('Guilherme', 5000 * 100);
+END; $$
