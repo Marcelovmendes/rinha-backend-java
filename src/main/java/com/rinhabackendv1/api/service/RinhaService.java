@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-
 import com.rinhabackendv1.api.dtos.BalanceDTO;
 import com.rinhabackendv1.api.dtos.ExtractDTO;
 import com.rinhabackendv1.api.dtos.TransactionDTO;
