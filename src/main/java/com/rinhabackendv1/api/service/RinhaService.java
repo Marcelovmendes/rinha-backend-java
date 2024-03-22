@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import com.rinhabackendv1.api.dtos.BalanceDTO;
 import com.rinhabackendv1.api.dtos.ExtractDTO;
 import com.rinhabackendv1.api.dtos.TransactionDTO;

@@ -68,9 +68,6 @@ Este comando construirá as imagens Docker necessárias (se ainda não estiverem
 
 Verificação: Após a conclusão do comando, o load balancer(nginx) estará acessível no endereço http://localhost:9999 (ou na porta configurada no docker-compose.yml).
 
-##Testes
-
-
 
 
     

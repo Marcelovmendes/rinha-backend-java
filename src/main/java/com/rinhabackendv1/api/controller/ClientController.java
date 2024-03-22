@@ -45,7 +45,7 @@ public class ClientController {
 
         BalanceDTO balance = rinhaService.postTransactionbyClientId(body, id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(balance);
+        return ResponseEntity.status(HttpStatus.CREATED).body(balance);
 
     }
 
