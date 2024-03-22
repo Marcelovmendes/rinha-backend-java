@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import com.rinhabackendv1.api.dtos.BalanceDTO;
 import com.rinhabackendv1.api.dtos.ExtractDTO;
@@ -19,6 +21,7 @@ public class RinhaService {
 
     private final ClientRepository clientRepository;
     private final TransactionsRepository transactionsRepository;
+    private static final Logger logger = LoggerFactory.getLogger(RinhaService.class);
 
     RinhaService(ClientRepository clientRepository, TransactionsRepository transactionsRepository) {
         this.clientRepository = clientRepository;
@@ -26,7 +29,10 @@ public class RinhaService {
     }
 
     public List<ClientModel> getAllClients() {
-        return clientRepository.findAll();
+      var findall=clientRepository.findAll();
+        
+      logger.info("Retorno do findAll: {}", findall);
+      return findall;
     }
 
     public BalanceDTO postTransactionbyClientId(TransactionDTO body, Long clientId) {

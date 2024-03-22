@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   api01: &api
-    image: marcelocortess/rinha-backend:0.0.2-SNAPSHOT
+    image: marcelocortess/rinha-backend:0.0.1-SNAPSHOT
     hostname: api01
     networks:
       - default
