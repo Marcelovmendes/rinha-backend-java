@@ -3,7 +3,7 @@
 
  ## Descrição do Projeto
 
-A Rinha de Backend é um desafio que tem como principal objetivo compartilhar conhecimento em formato de desafio! 
+A Rinha de Backend é um competição que tem como principal objetivo compartilhar conhecimento em formato de desafio! 
 O principal assunto dessa Rinha trata de controle de concorrência com o tema créditos e débitos (crébitos).
 
 Minha versão foi feita utilizando SpringBoot e PostgreSQL, destinada a simular um sistema bancário oferecendo funcionalidades para realizar transações, depósitos, saques, além de obter extratos com diversos detalhes sobre o financeiro do usuário. O sistema foi desenvolvido para aguentar altas cargas de acesso, em um ambiente de competição que desafia os limites de processamento e gestão de dados sob demanda.
