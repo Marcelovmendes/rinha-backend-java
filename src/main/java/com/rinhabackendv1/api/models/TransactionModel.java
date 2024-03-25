@@ -14,11 +14,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "transacoes")
+@NoArgsConstructor
+@AllArgsConstructor
 public class TransactionModel {
 
     @Id
@@ -41,12 +45,13 @@ public class TransactionModel {
     @Column(name = "realizado_em")
     @CreationTimestamp
     private LocalDateTime realizadoEm;
-     
-    public TransactionModel(TransactionDTO dto, ClientModel client) {
-        this.valor = dto.getValor();
-        this.tipo = dto.getTipo();
-        this.descricao = dto.getDescricao();
-        this.realizadoEm = LocalDateTime.now();
-        this.cliente = client;
+
+    public TransactionDTO toDTO() {
+        TransactionDTO dto = new TransactionDTO();
+        dto.setValor(this.valor);
+        dto.setTipo(this.tipo);
+        dto.setDescricao(this.descricao);
+        dto.setRealizadaEm(this.realizadoEm);
+        return dto;
     }
 }

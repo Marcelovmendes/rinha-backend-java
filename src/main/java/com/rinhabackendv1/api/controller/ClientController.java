@@ -35,7 +35,7 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.OK).body("It's healthy!");
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<Iterable<ClientModel>> getAllClients() {
         return ResponseEntity.status(HttpStatus.OK).body(rinhaService.getAllClients());
     }
@@ -45,7 +45,7 @@ public class ClientController {
 
         BalanceDTO balance = rinhaService.postTransactionbyClientId(body, id);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(balance);
+        return ResponseEntity.status(HttpStatus.OK).body(balance);
 
     }
 

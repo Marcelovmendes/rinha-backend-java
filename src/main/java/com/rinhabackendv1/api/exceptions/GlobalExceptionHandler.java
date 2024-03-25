@@ -15,8 +15,8 @@ public class GlobalExceptionHandler {
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler({ IllegalArgumentException.class })
-    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException exception) {
+    @ExceptionHandler({ BalanceLimitExceededException.class })
+    public ResponseEntity<Object> handleBalanceLimitExceededException(BalanceLimitExceededException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(exception.getMessage());
